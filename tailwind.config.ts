@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,27 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Platform-specific colors
+				talabat: {
+					light: '#FEC6A1',
+					DEFAULT: '#F97316',
+					dark: '#EA580C'
+				},
+				noon: {
+					light: '#FEF7CD',
+					DEFAULT: '#FACC15',
+					dark: '#EAB308'
+				},
+				careem: {
+					light: '#F2FCE2',
+					DEFAULT: '#84CC16',
+					dark: '#65A30D'
+				},
+				google: {
+					light: '#E6F0FF',
+					DEFAULT: '#3B82F6',
+					dark: '#2563EB'
 				}
 			},
 			borderRadius: {
@@ -84,11 +106,16 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'pulse-slow': {
+					'0%, 100%': { opacity: '1' },
+					'50%': { opacity: '0.8' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'pulse-slow': 'pulse-slow 3s ease-in-out infinite'
 			}
 		}
 	},
