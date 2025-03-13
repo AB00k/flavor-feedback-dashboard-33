@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Review, filterReviews } from "@/services/mockData";
@@ -16,8 +15,8 @@ interface ReviewListProps {
 export function ReviewList({ reviews, locations, brands }: ReviewListProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<string>("");
-  const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [selectedLocation, setSelectedLocation] = useState<string>("all");
+  const [selectedBrand, setSelectedBrand] = useState<string>("all");
   const [sortBy, setSortBy] = useState<"date" | "rating">("date");
 
   const togglePlatform = (platform: string) => {
@@ -31,8 +30,8 @@ export function ReviewList({ reviews, locations, brands }: ReviewListProps) {
   const filteredReviews = filterReviews(
     reviews,
     selectedPlatforms,
-    selectedLocation ? [selectedLocation] : [],
-    selectedBrand ? [selectedBrand] : []
+    selectedLocation !== "all" ? [selectedLocation] : [],
+    selectedBrand !== "all" ? [selectedBrand] : []
   ).filter((review) =>
     review.comment.toLowerCase().includes(searchTerm.toLowerCase()) ||
     review.reviewer.toLowerCase().includes(searchTerm.toLowerCase())
@@ -79,7 +78,7 @@ export function ReviewList({ reviews, locations, brands }: ReviewListProps) {
                   <SelectValue placeholder="All Locations" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Locations</SelectItem>
+                  <SelectItem value="all">All Locations</SelectItem>
                   {locations.map((location) => (
                     <SelectItem key={location} value={location}>
                       {location}
@@ -95,7 +94,7 @@ export function ReviewList({ reviews, locations, brands }: ReviewListProps) {
                   <SelectValue placeholder="All Brands" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Brands</SelectItem>
+                  <SelectItem value="all">All Brands</SelectItem>
                   {brands.map((brand) => (
                     <SelectItem key={brand} value={brand}>
                       {brand}
