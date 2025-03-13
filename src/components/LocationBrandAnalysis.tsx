@@ -13,12 +13,8 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
   const locationData = useMemo(() => {
     const locations = [...new Set(reviews.map((review) => review.location))];
     
-    return locations.map((location) => {
+    const data = locations.map((location) => {
       const locationReviews = reviews.filter((review) => review.location === location);
-      const talabatReviews = locationReviews.filter((review) => review.platform === "talabat");
-      const noonReviews = locationReviews.filter((review) => review.platform === "noon");
-      const careemReviews = locationReviews.filter((review) => review.platform === "careem");
-      const googleReviews = locationReviews.filter((review) => review.platform === "google");
       
       const getAvgRating = (reviews: Review[]) => {
         if (reviews.length === 0) return 0;
@@ -27,25 +23,21 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
       
       return {
         name: location,
-        Talabat: getAvgRating(talabatReviews),
-        Noon: getAvgRating(noonReviews),
-        Careem: getAvgRating(careemReviews),
-        Google: getAvgRating(googleReviews),
-        Overall: getAvgRating(locationReviews),
-        count: locationReviews.length
+        Rating: getAvgRating(locationReviews),
+        Reviews: locationReviews.length
       };
-    }).sort((a, b) => b.count - a.count).slice(0, 6); // Only show top 6 locations by review count
+    });
+    
+    return data
+      .sort((a, b) => b.Reviews - a.Reviews)
+      .slice(0, 5); // Only show top 5 locations by review count
   }, [reviews]);
   
   const brandData = useMemo(() => {
     const brands = [...new Set(reviews.map((review) => review.brand))];
     
-    return brands.map((brand) => {
+    const data = brands.map((brand) => {
       const brandReviews = reviews.filter((review) => review.brand === brand);
-      const talabatReviews = brandReviews.filter((review) => review.platform === "talabat");
-      const noonReviews = brandReviews.filter((review) => review.platform === "noon");
-      const careemReviews = brandReviews.filter((review) => review.platform === "careem");
-      const googleReviews = brandReviews.filter((review) => review.platform === "google");
       
       const getAvgRating = (reviews: Review[]) => {
         if (reviews.length === 0) return 0;
@@ -54,14 +46,14 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
       
       return {
         name: brand,
-        Talabat: getAvgRating(talabatReviews),
-        Noon: getAvgRating(noonReviews),
-        Careem: getAvgRating(careemReviews),
-        Google: getAvgRating(googleReviews),
-        Overall: getAvgRating(brandReviews),
-        count: brandReviews.length
+        Rating: getAvgRating(brandReviews),
+        Reviews: brandReviews.length
       };
-    }).sort((a, b) => b.count - a.count).slice(0, 6); // Only show top 6 brands by review count
+    });
+    
+    return data
+      .sort((a, b) => b.Reviews - a.Reviews)
+      .slice(0, 5); // Only show top 5 brands by review count
   }, [reviews]);
 
   return (
@@ -87,20 +79,16 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
                   <XAxis type="number" domain={[0, 5]} tickCount={6} />
                   <YAxis dataKey="name" type="category" width={100} />
                   <Tooltip 
-                    formatter={(value) => [`${value} stars`, '']}
-                    labelFormatter={(name) => {
-                      const location = locationData.find(loc => loc.name === name);
-                      return `${name} (${location?.count || 0} reviews)`;
-                    }}
+                    formatter={(value, name) => [
+                      name === "Rating" ? `${value} stars` : `${value} reviews`, 
+                      name
+                    ]}
                   />
                   <Legend iconType="circle" />
-                  <Bar dataKey="Overall" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
-                    <LabelList dataKey="Overall" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
+                  <Bar dataKey="Rating" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
+                    <LabelList dataKey="Rating" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
                   </Bar>
-                  <Bar dataKey="Talabat" fill="#F97316" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Noon" fill="#FACC15" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Careem" fill="#84CC16" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Google" fill="#3B82F6" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Reviews" fill="#D6BCFA" radius={[0, 4, 4, 0]} maxBarSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -117,20 +105,16 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
                   <XAxis type="number" domain={[0, 5]} tickCount={6} />
                   <YAxis dataKey="name" type="category" width={100} />
                   <Tooltip 
-                    formatter={(value) => [`${value} stars`, '']}
-                    labelFormatter={(name) => {
-                      const brand = brandData.find(b => b.name === name);
-                      return `${name} (${brand?.count || 0} reviews)`;
-                    }}
+                    formatter={(value, name) => [
+                      name === "Rating" ? `${value} stars` : `${value} reviews`, 
+                      name
+                    ]}
                   />
                   <Legend iconType="circle" />
-                  <Bar dataKey="Overall" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
-                    <LabelList dataKey="Overall" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
+                  <Bar dataKey="Rating" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
+                    <LabelList dataKey="Rating" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
                   </Bar>
-                  <Bar dataKey="Talabat" fill="#F97316" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Noon" fill="#FACC15" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Careem" fill="#84CC16" radius={[0, 4, 4, 0]} maxBarSize={20} />
-                  <Bar dataKey="Google" fill="#3B82F6" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Reviews" fill="#D6BCFA" radius={[0, 4, 4, 0]} maxBarSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

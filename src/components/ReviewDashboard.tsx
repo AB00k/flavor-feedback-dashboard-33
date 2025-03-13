@@ -5,6 +5,7 @@ import { SentimentChart } from "@/components/SentimentChart";
 import { TopReviews } from "@/components/TopReviews";
 import { PlatformReviews } from "@/components/PlatformReviews";
 import { LocationBrandAnalysis } from "@/components/LocationBrandAnalysis";
+import { ReviewTrendChart } from "@/components/ReviewTrendChart";
 import {
   Review,
   generateMockReviews,
@@ -83,6 +84,10 @@ export default function ReviewDashboard() {
       <div className="grid gap-6 md:grid-cols-2 mb-6">
         <SentimentChart data={sentimentData} />
         <TopReviews positiveReviews={positiveReviews} negativeReviews={negativeReviews} />
+      </div>
+
+      <div className="grid gap-6 mb-6">
+        <ReviewTrendChart reviews={reviews} />
       </div>
 
       <div className="grid gap-6 mb-6">
