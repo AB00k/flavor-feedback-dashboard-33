@@ -81,19 +81,90 @@ export default function ReviewDashboard() {
         ))}
       </div>
 
+      {/* First row: Sentiment Analysis and Rating Trends side by side */}
       <div className="grid gap-6 md:grid-cols-2 mb-6">
         <SentimentChart data={sentimentData} />
-        <TopReviews positiveReviews={positiveReviews} negativeReviews={negativeReviews} />
-      </div>
-
-      <div className="grid gap-6 mb-6">
         <ReviewTrendChart reviews={reviews} />
       </div>
 
+      {/* Second row: Top Positive and Negative Reviews */}
+      <div className="grid gap-6 md:grid-cols-2 mb-6">
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Top Positive Reviews</h2>
+          <div className="space-y-4">
+            {positiveReviews.map((review) => (
+              <div key={review.id} className="rounded-lg border p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`rounded-full w-2 h-2 bg-${review.platform}`} />
+                    <span className="text-sm font-medium">{review.platform.charAt(0).toUpperCase() + review.platform.slice(1)}</span>
+                    <span className="text-sm text-muted-foreground">• {review.date}</span>
+                  </div>
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={14}
+                        className={`${
+                          star <= review.rating ? "fill-current text-amber-400" : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm mb-2">"{review.comment}"</p>
+                <div className="flex justify-between">
+                  <span className="text-xs text-muted-foreground">{review.reviewer}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {review.location} • {review.brand}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-xl font-semibold mb-4">Top Negative Reviews</h2>
+          <div className="space-y-4">
+            {negativeReviews.map((review) => (
+              <div key={review.id} className="rounded-lg border p-4">
+                <div className="flex justify-between items-start mb-2">
+                  <div className="flex items-center gap-2">
+                    <div className={`rounded-full w-2 h-2 bg-${review.platform}`} />
+                    <span className="text-sm font-medium">{review.platform.charAt(0).toUpperCase() + review.platform.slice(1)}</span>
+                    <span className="text-sm text-muted-foreground">• {review.date}</span>
+                  </div>
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={14}
+                        className={`${
+                          star <= review.rating ? "fill-current text-amber-400" : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm mb-2">"{review.comment}"</p>
+                <div className="flex justify-between">
+                  <span className="text-xs text-muted-foreground">{review.reviewer}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {review.location} • {review.brand}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Third row: Location and Brand Analysis */}
       <div className="grid gap-6 mb-6">
         <LocationBrandAnalysis reviews={reviews} />
       </div>
       
+      {/* Fourth row: Reviews by Platform */}
       <div className="grid gap-4 mb-6">
         <h2 className="text-xl font-semibold">Reviews by Platform</h2>
         <div className="space-y-2">

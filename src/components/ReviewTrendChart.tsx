@@ -21,9 +21,9 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
       count: number
     }>();
     
-    // Get last 6 months
+    // Get last 3 months instead of 6
     const today = new Date();
-    for (let i = 5; i >= 0; i--) {
+    for (let i = 2; i >= 0; i--) {
       const date = new Date(today);
       date.setMonth(today.getMonth() - i);
       const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
@@ -80,12 +80,12 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
   }, [reviews]);
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Rating Trends (Last 6 Months)</CardTitle>
+        <CardTitle>Rating Trends (Last 3 Months)</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
