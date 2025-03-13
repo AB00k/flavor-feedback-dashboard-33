@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { RatingSummaryCard } from "@/components/RatingSummaryCard";
 import { SentimentChart } from "@/components/SentimentChart";
 import { TopReviews } from "@/components/TopReviews";
-import { ReviewList } from "@/components/ReviewList";
+import { PlatformReviews } from "@/components/PlatformReviews";
 import { LocationBrandAnalysis } from "@/components/LocationBrandAnalysis";
 import {
   Review,
@@ -11,7 +11,6 @@ import {
   getAggregatedRatings,
   getSentimentData,
   getTopReviews,
-  getFilterOptions,
 } from "@/services/mockData";
 
 export default function ReviewDashboard() {
@@ -40,7 +39,12 @@ export default function ReviewDashboard() {
   const sentimentData = getSentimentData(reviews);
   const positiveReviews = getTopReviews(reviews, true, 3);
   const negativeReviews = getTopReviews(reviews, false, 3);
-  const filterOptions = getFilterOptions(reviews);
+
+  // Group reviews by platform
+  const talabatReviews = reviews.filter(review => review.platform === "talabat");
+  const noonReviews = reviews.filter(review => review.platform === "noon");
+  const careemReviews = reviews.filter(review => review.platform === "careem");
+  const googleReviews = reviews.filter(review => review.platform === "google");
 
   if (isLoading) {
     return (
@@ -84,13 +88,31 @@ export default function ReviewDashboard() {
       <div className="grid gap-6 mb-6">
         <LocationBrandAnalysis reviews={reviews} />
       </div>
-
-      <div className="grid gap-6">
-        <ReviewList
-          reviews={reviews}
-          locations={filterOptions.locations}
-          brands={filterOptions.brands}
-        />
+      
+      <div className="grid gap-4 mb-6">
+        <h2 className="text-xl font-semibold">Reviews by Platform</h2>
+        <div className="space-y-2">
+          <PlatformReviews 
+            platform="talabat" 
+            reviews={talabatReviews} 
+            color="#F97316" 
+          />
+          <PlatformReviews 
+            platform="noon" 
+            reviews={noonReviews} 
+            color="#FACC15" 
+          />
+          <PlatformReviews 
+            platform="careem" 
+            reviews={careemReviews} 
+            color="#84CC16" 
+          />
+          <PlatformReviews 
+            platform="google" 
+            reviews={googleReviews} 
+            color="#3B82F6" 
+          />
+        </div>
       </div>
     </div>
   );

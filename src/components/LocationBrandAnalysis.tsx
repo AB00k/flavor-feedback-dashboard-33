@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LabelList } from "recharts";
 import { Review } from "@/services/mockData";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useMemo } from "react";
@@ -34,7 +34,7 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
         Overall: getAvgRating(locationReviews),
         count: locationReviews.length
       };
-    });
+    }).sort((a, b) => b.count - a.count).slice(0, 6); // Only show top 6 locations by review count
   }, [reviews]);
   
   const brandData = useMemo(() => {
@@ -61,7 +61,7 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
         Overall: getAvgRating(brandReviews),
         count: brandReviews.length
       };
-    });
+    }).sort((a, b) => b.count - a.count).slice(0, 6); // Only show top 6 brands by review count
   }, [reviews]);
 
   return (
@@ -78,22 +78,29 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
           <TabsContent value="location">
             <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={locationData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 5]} />
+                <BarChart 
+                  data={locationData}
+                  layout="vertical"
+                  margin={{ top: 10, right: 30, left: 60, bottom: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                  <XAxis type="number" domain={[0, 5]} tickCount={6} />
+                  <YAxis dataKey="name" type="category" width={100} />
                   <Tooltip 
-                    formatter={(value) => [value, '']}
+                    formatter={(value) => [`${value} stars`, '']}
                     labelFormatter={(name) => {
                       const location = locationData.find(loc => loc.name === name);
                       return `${name} (${location?.count || 0} reviews)`;
                     }}
                   />
-                  <Legend />
-                  <Bar dataKey="Talabat" fill="#F97316" />
-                  <Bar dataKey="Noon" fill="#FACC15" />
-                  <Bar dataKey="Careem" fill="#84CC16" />
-                  <Bar dataKey="Google" fill="#3B82F6" />
+                  <Legend iconType="circle" />
+                  <Bar dataKey="Overall" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
+                    <LabelList dataKey="Overall" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
+                  </Bar>
+                  <Bar dataKey="Talabat" fill="#F97316" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Noon" fill="#FACC15" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Careem" fill="#84CC16" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Google" fill="#3B82F6" radius={[0, 4, 4, 0]} maxBarSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -101,22 +108,29 @@ export function LocationBrandAnalysis({ reviews }: LocationBrandAnalysisProps) {
           <TabsContent value="brand">
             <div className="h-[400px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={brandData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis domain={[0, 5]} />
+                <BarChart 
+                  data={brandData}
+                  layout="vertical"
+                  margin={{ top: 10, right: 30, left: 60, bottom: 20 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                  <XAxis type="number" domain={[0, 5]} tickCount={6} />
+                  <YAxis dataKey="name" type="category" width={100} />
                   <Tooltip 
-                    formatter={(value) => [value, '']}
+                    formatter={(value) => [`${value} stars`, '']}
                     labelFormatter={(name) => {
                       const brand = brandData.find(b => b.name === name);
                       return `${name} (${brand?.count || 0} reviews)`;
                     }}
                   />
-                  <Legend />
-                  <Bar dataKey="Talabat" fill="#F97316" />
-                  <Bar dataKey="Noon" fill="#FACC15" />
-                  <Bar dataKey="Careem" fill="#84CC16" />
-                  <Bar dataKey="Google" fill="#3B82F6" />
+                  <Legend iconType="circle" />
+                  <Bar dataKey="Overall" fill="#9b87f5" radius={[0, 4, 4, 0]} maxBarSize={20}>
+                    <LabelList dataKey="Overall" position="right" formatter={(v: number) => v > 0 ? v.toFixed(1) : ''} />
+                  </Bar>
+                  <Bar dataKey="Talabat" fill="#F97316" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Noon" fill="#FACC15" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Careem" fill="#84CC16" radius={[0, 4, 4, 0]} maxBarSize={20} />
+                  <Bar dataKey="Google" fill="#3B82F6" radius={[0, 4, 4, 0]} maxBarSize={20} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
