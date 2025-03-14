@@ -13,10 +13,12 @@ import {
   getSentimentData,
   getTopReviews,
 } from "@/services/mockData";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function ReviewDashboard() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState("overview");
 
   useEffect(() => {
     // Simulate loading data
@@ -62,68 +64,82 @@ export default function ReviewDashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold">Restaurant Feedback Dashboard</h1>
-        <p className="text-muted-foreground">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold mb-1">Restaurant Feedback Dashboard</h1>
+        <p className="text-sm text-muted-foreground">
           Analyzing customer reviews across multiple delivery platforms
         </p>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-6">
-        {aggregatedRatings.map((platform) => (
-          <RatingSummaryCard
-            key={platform.platform}
-            platform={platform.platform}
-            rating={platform.averageRating}
-            reviewCount={platform.reviewCount}
-            color={platform.color}
-          />
-        ))}
-      </div>
+      <Tabs value={activeSection} onValueChange={setActiveSection} className="mb-6">
+        <TabsList className="mb-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="detailed">Detailed Analysis</TabsTrigger>
+          <TabsTrigger value="platform">Platform Reviews</TabsTrigger>
+        </TabsList>
 
-      {/* Sentiment Analysis and Rating Trends side by side */}
-      <div className="grid gap-6 md:grid-cols-2 mb-6">
-        <SentimentChart data={sentimentData} />
-        <ReviewTrendChart reviews={reviews} />
-      </div>
+        <TabsContent value="overview">
+          {/* Rating Summary Cards */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+            {aggregatedRatings.map((platform) => (
+              <RatingSummaryCard
+                key={platform.platform}
+                platform={platform.platform}
+                rating={platform.averageRating}
+                reviewCount={platform.reviewCount}
+                color={platform.color}
+              />
+            ))}
+          </div>
 
-      {/* Top Positive and Negative Reviews side by side */}
-      <div className="grid gap-6 md:grid-cols-2 mb-6">
-        <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
-        <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
-      </div>
+          {/* Sentiment Analysis and Rating Trends side by side */}
+          <div className="grid gap-6 md:grid-cols-2 mb-6">
+            <SentimentChart data={sentimentData} />
+            <ReviewTrendChart reviews={reviews} />
+          </div>
 
-      {/* Location Brand Analysis */}
-      <div className="grid gap-6 mb-6">
-        <LocationBrandAnalysis reviews={reviews} />
-      </div>
-      
-      {/* Reviews by Platform */}
-      <div className="grid gap-4 mb-6">
-        <h2 className="text-xl font-semibold">Reviews by Platform</h2>
-        <div className="space-y-2">
-          <PlatformReviews 
-            platform="talabat" 
-            reviews={talabatReviews} 
-            color="#F97316" 
-          />
-          <PlatformReviews 
-            platform="noon" 
-            reviews={noonReviews} 
-            color="#FACC15" 
-          />
-          <PlatformReviews 
-            platform="careem" 
-            reviews={careemReviews} 
-            color="#84CC16" 
-          />
-          <PlatformReviews 
-            platform="google" 
-            reviews={googleReviews} 
-            color="#3B82F6" 
-          />
-        </div>
-      </div>
+          {/* Top Positive and Negative Reviews side by side */}
+          <div className="grid gap-6 md:grid-cols-2 mb-6">
+            <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
+            <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="detailed">
+          {/* Location Brand Analysis */}
+          <div className="grid gap-6 mb-6">
+            <LocationBrandAnalysis reviews={reviews} />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="platform">
+          {/* Reviews by Platform */}
+          <div className="grid gap-4 mb-6">
+            <div className="space-y-4">
+              <PlatformReviews 
+                platform="talabat" 
+                reviews={talabatReviews} 
+                color="#F97316" 
+              />
+              <PlatformReviews 
+                platform="noon" 
+                reviews={noonReviews} 
+                color="#FACC15" 
+              />
+              <PlatformReviews 
+                platform="careem" 
+                reviews={careemReviews} 
+                color="#84CC16" 
+              />
+              <PlatformReviews 
+                platform="google" 
+                reviews={googleReviews} 
+                color="#3B82F6" 
+              />
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
