@@ -63,74 +63,58 @@ export default function ReviewDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto bg-[#f8f9fa]">
-      <div className="p-4 sm:p-6">
-        <div className="flex flex-col space-y-1 mb-4">
-          <div className="text-sm font-medium text-blue-600">Dashboard</div>
-          <h1 className="text-xl font-bold text-gray-800">Restaurant Feedback Overview</h1>
-          <div className="text-sm text-gray-500">
-            Last updated: {new Date().toLocaleDateString()}
+    <div className="p-6 max-w-7xl mx-auto">
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold mb-1">Restaurant Feedback Dashboard</h1>
+        <p className="text-sm text-muted-foreground">
+          Analyzing customer reviews across multiple delivery platforms
+        </p>
+      </header>
+
+      <Tabs value={activeSection} onValueChange={setActiveSection} className="mb-6">
+        <TabsList className="mb-4">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="detailed">Detailed Analysis</TabsTrigger>
+          <TabsTrigger value="platform">Platform Reviews</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview">
+          {/* Rating Summary Cards */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-6">
+            {aggregatedRatings.map((platform) => (
+              <RatingSummaryCard
+                key={platform.platform}
+                platform={platform.platform}
+                rating={platform.averageRating}
+                reviewCount={platform.reviewCount}
+                color={platform.color}
+              />
+            ))}
           </div>
-        </div>
 
-        <Tabs value={activeSection} onValueChange={setActiveSection} className="mb-6">
-          <TabsList className="mb-6 bg-white border border-gray-100 p-1 rounded-lg">
-            <TabsTrigger 
-              value="overview" 
-              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger 
-              value="detailed" 
-              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
-            >
-              Detailed Analysis
-            </TabsTrigger>
-            <TabsTrigger 
-              value="platform" 
-              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
-            >
-              Platform Reviews
-            </TabsTrigger>
-          </TabsList>
+          {/* Sentiment Analysis and Rating Trends side by side */}
+          <div className="grid gap-6 md:grid-cols-2 mb-6">
+            <SentimentChart data={sentimentData} />
+            <ReviewTrendChart reviews={reviews} />
+          </div>
 
-          <TabsContent value="overview" className="space-y-5">
-            {/* Rating Summary Cards */}
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {aggregatedRatings.map((platform) => (
-                <RatingSummaryCard
-                  key={platform.platform}
-                  platform={platform.platform}
-                  rating={platform.averageRating}
-                  reviewCount={platform.reviewCount}
-                  color={platform.color}
-                />
-              ))}
-            </div>
+          {/* Top Positive and Negative Reviews side by side */}
+          <div className="grid gap-6 md:grid-cols-2 mb-6">
+            <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
+            <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
+          </div>
+        </TabsContent>
 
-            {/* Sentiment Analysis and Rating Trends side by side */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <SentimentChart data={sentimentData} />
-              <ReviewTrendChart reviews={reviews} />
-            </div>
-
-            {/* Top Positive and Negative Reviews side by side */}
-            <div className="grid gap-4 md:grid-cols-2">
-              <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
-              <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="detailed">
-            {/* Location Brand Analysis */}
-            <div className="grid gap-4">
-              <LocationBrandAnalysis reviews={reviews} />
-            </div>
-          </TabsContent>
-          
-          <TabsContent value="platform">
-            {/* Reviews by Platform */}
+        <TabsContent value="detailed">
+          {/* Location Brand Analysis */}
+          <div className="grid gap-6 mb-6">
+            <LocationBrandAnalysis reviews={reviews} />
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="platform">
+          {/* Reviews by Platform */}
+          <div className="grid gap-4 mb-6">
             <div className="space-y-4">
               <PlatformReviews 
                 platform="talabat" 
@@ -153,9 +137,9 @@ export default function ReviewDashboard() {
                 color="#3B82F6" 
               />
             </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+          </div>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

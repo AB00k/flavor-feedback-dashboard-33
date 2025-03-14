@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
+    --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -36,12 +35,19 @@
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
+
     --sidebar-foreground: 240 5.3% 26.1%;
+
     --sidebar-primary: 240 5.9% 10%;
+
     --sidebar-primary-foreground: 0 0% 98%;
+
     --sidebar-accent: 240 4.8% 95.9%;
+
     --sidebar-accent-foreground: 240 5.9% 10%;
+
     --sidebar-border: 220 13% 91%;
+
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -92,29 +98,4 @@
   body {
     @apply bg-background text-foreground;
   }
-}
-
-/* Dashboard specific styles to match image */
-.dashboard-card {
-  @apply bg-white shadow-sm rounded-xl border-0 p-5 h-full;
-}
-
-.metric-value {
-  @apply text-2xl font-bold mt-2 text-gray-800;
-}
-
-.metric-label {
-  @apply text-sm text-gray-500 font-medium;
-}
-
-.metric-icon {
-  @apply rounded-full w-10 h-10 flex items-center justify-center text-lg;
-}
-
-.trend-up {
-  @apply text-green-500 text-xs font-medium flex items-center;
-}
-
-.trend-down {
-  @apply text-red-500 text-xs font-medium flex items-center;
 }
