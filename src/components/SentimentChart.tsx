@@ -14,7 +14,7 @@ export function SentimentChart({ data }: SentimentChartProps) {
     return [
       { name: "Positive", value: data.positive, color: "#84CC16" },
       { name: "Neutral", value: data.neutral, color: "#FACC15" },
-      { name: "Negative", value: data.negative, color: "#F97316" },
+      { name: "Negative", value: data.negative, color: "#EA384C" }, // Changed from #F97316 to #EA384C (red)
     ];
   }, [data]);
 
@@ -47,7 +47,7 @@ export function SentimentChart({ data }: SentimentChartProps) {
       case "Neutral":
         return <MinusCircle className="mr-1 h-4 w-4 text-yellow-500" />;
       case "Negative":
-        return <ThumbsDown className="mr-1 h-4 w-4 text-orange-500" />;
+        return <ThumbsDown className="mr-1 h-4 w-4 text-red-500" />; // Changed from text-orange-500 to text-red-500
       default:
         return null;
     }
