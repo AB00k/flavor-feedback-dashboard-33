@@ -36,17 +36,17 @@ export function RatingSummaryCard({ platform, rating, reviewCount, color }: Rati
   };
 
   return (
-    <Card className="dashboard-card">
-      <CardContent className="p-0">
+    <Card className="h-full border-0 shadow-sm">
+      <CardContent className="p-5">
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-3">
             <div 
-              className="metric-icon text-white font-medium" 
+              className="text-white font-medium rounded-full w-10 h-10 flex items-center justify-center text-lg" 
               style={{ backgroundColor: color }}
             >
               {getPlatformIcon()}
             </div>
-            <div className={isTrendPositive ? "trend-up" : "trend-down"}>
+            <div className={`text-xs font-medium flex items-center ${isTrendPositive ? "text-green-500" : "text-red-500"}`}>
               {isTrendPositive ? (
                 <TrendingUp className="w-3 h-3 mr-1" />
               ) : (
@@ -56,10 +56,10 @@ export function RatingSummaryCard({ platform, rating, reviewCount, color }: Rati
             </div>
           </div>
           
-          <div className="metric-label">{formatPlatformName()} Rating</div>
+          <div className="text-sm text-gray-500 font-medium">{formatPlatformName()} Rating</div>
           <div className="flex items-baseline gap-2">
-            <div className="metric-value">{rating.toFixed(1)}</div>
-            <div className="flex">
+            <div className="text-2xl font-bold text-gray-800 mt-1">{rating.toFixed(1)}</div>
+            <div className="flex mt-1">
               {[1, 2, 3, 4, 5].map((star) => (
                 <Star
                   key={star}
@@ -71,7 +71,7 @@ export function RatingSummaryCard({ platform, rating, reviewCount, color }: Rati
               ))}
             </div>
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-xs text-gray-500 mt-1">
             {reviewCount} {reviewCount === 1 ? "review" : "reviews"}
           </p>
         </div>

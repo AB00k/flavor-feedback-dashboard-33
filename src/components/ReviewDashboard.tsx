@@ -63,39 +63,41 @@ export default function ReviewDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="p-6 sm:p-8">
-        <div className="flex flex-col space-y-2 mb-2">
-          <div className="text-sm font-medium text-blue-600 uppercase">DASHBOARD</div>
-          <h1 className="text-3xl font-bold">Restaurant Feedback Summary</h1>
-          <div className="text-muted-foreground">
-            Updated {new Date().toLocaleDateString()}
-          </div>
-        </div>
-
-        <div className="flex justify-between items-center mt-8 mb-6">
-          <h2 className="text-2xl font-bold">Feedback Overview</h2>
-          <div className="flex gap-2">
-            <div className="flex items-center gap-2 text-sm bg-green-50 text-green-700 px-3 py-1 rounded-full">
-              <span className="h-2 w-2 bg-green-500 rounded-full"></span>
-              Real-time data
-            </div>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
-              <span>Export Report</span>
-            </button>
+    <div className="max-w-7xl mx-auto bg-[#f8f9fa]">
+      <div className="p-4 sm:p-6">
+        <div className="flex flex-col space-y-1 mb-4">
+          <div className="text-sm font-medium text-blue-600">Dashboard</div>
+          <h1 className="text-xl font-bold text-gray-800">Restaurant Feedback Overview</h1>
+          <div className="text-sm text-gray-500">
+            Last updated: {new Date().toLocaleDateString()}
           </div>
         </div>
 
         <Tabs value={activeSection} onValueChange={setActiveSection} className="mb-6">
-          <TabsList className="mb-6 bg-muted/50">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="detailed">Detailed Analysis</TabsTrigger>
-            <TabsTrigger value="platform">Platform Reviews</TabsTrigger>
+          <TabsList className="mb-6 bg-white border border-gray-100 p-1 rounded-lg">
+            <TabsTrigger 
+              value="overview" 
+              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
+            >
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="detailed" 
+              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
+            >
+              Detailed Analysis
+            </TabsTrigger>
+            <TabsTrigger 
+              value="platform" 
+              className="data-[state=active]:bg-blue-50 data-[state=active]:text-blue-600 data-[state=active]:shadow-none rounded-md px-4"
+            >
+              Platform Reviews
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview">
+          <TabsContent value="overview" className="space-y-5">
             {/* Rating Summary Cards */}
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
               {aggregatedRatings.map((platform) => (
                 <RatingSummaryCard
                   key={platform.platform}
@@ -108,13 +110,13 @@ export default function ReviewDashboard() {
             </div>
 
             {/* Sentiment Analysis and Rating Trends side by side */}
-            <div className="grid gap-6 md:grid-cols-2 mb-8">
+            <div className="grid gap-4 md:grid-cols-2">
               <SentimentChart data={sentimentData} />
               <ReviewTrendChart reviews={reviews} />
             </div>
 
             {/* Top Positive and Negative Reviews side by side */}
-            <div className="grid gap-6 md:grid-cols-2 mb-8">
+            <div className="grid gap-4 md:grid-cols-2">
               <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
               <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
             </div>
@@ -122,14 +124,14 @@ export default function ReviewDashboard() {
 
           <TabsContent value="detailed">
             {/* Location Brand Analysis */}
-            <div className="grid gap-6 mb-8">
+            <div className="grid gap-4">
               <LocationBrandAnalysis reviews={reviews} />
             </div>
           </TabsContent>
           
           <TabsContent value="platform">
             {/* Reviews by Platform */}
-            <div className="space-y-6 mb-8">
+            <div className="space-y-4">
               <PlatformReviews 
                 platform="talabat" 
                 reviews={talabatReviews} 

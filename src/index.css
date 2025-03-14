@@ -96,25 +96,25 @@
 
 /* Dashboard specific styles to match image */
 .dashboard-card {
-  @apply bg-white shadow-sm rounded-lg border border-gray-100 p-6 h-full;
+  @apply bg-white shadow-sm rounded-xl border-0 p-5 h-full;
 }
 
 .metric-value {
-  @apply text-3xl font-bold mt-2;
+  @apply text-2xl font-bold mt-2 text-gray-800;
 }
 
 .metric-label {
-  @apply text-sm text-muted-foreground;
+  @apply text-sm text-gray-500 font-medium;
 }
 
 .metric-icon {
-  @apply p-2 rounded-full;
+  @apply rounded-full w-10 h-10 flex items-center justify-center text-lg;
 }
 
 .trend-up {
-  @apply text-green-500 text-sm font-medium flex items-center;
+  @apply text-green-500 text-xs font-medium flex items-center;
 }
 
 .trend-down {
-  @apply text-red-500 text-sm font-medium flex items-center;
+  @apply text-red-500 text-xs font-medium flex items-center;
 }
