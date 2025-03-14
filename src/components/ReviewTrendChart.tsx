@@ -21,9 +21,9 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
       count: number
     }>();
     
-    // Get last 6 months
+    // Get last 3 months instead of 6
     const today = new Date();
-    for (let i = 5; i >= 0; i--) {
+    for (let i = 2; i >= 0; i--) {
       const date = new Date(today);
       date.setMonth(today.getMonth() - i);
       const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
@@ -80,42 +80,53 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
   }, [reviews]);
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Rating Trends (Last 6 Months)</CardTitle>
+        <CardTitle>Rating Trends (Last 3 Months)</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
-              margin={{ top: 5, right: 30, left: 20, bottom: 25 }}
+              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis 
                 dataKey="month" 
-                angle={-15} 
-                textAnchor="end" 
-                height={60} 
-                tick={{ fontSize: 12 }} 
+                tick={{ fontSize: 12 }}
+                padding={{ left: 10, right: 10 }}
               />
-              <YAxis domain={[0, 5]} />
+              <YAxis 
+                domain={[0, 5]} 
+                tick={{ fontSize: 11 }}
+                tickCount={6}
+              />
               <Tooltip 
                 formatter={(value) => [`${value} stars`, '']}
+                contentStyle={{ 
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+                }}
               />
-              <Legend iconType="circle" />
+              <Legend 
+                iconType="circle" 
+                verticalAlign="bottom"
+                wrapperStyle={{ paddingTop: '10px' }}
+              />
               <Line 
                 type="monotone" 
                 dataKey="Average" 
                 stroke="#9b87f5" 
-                strokeWidth={2} 
-                dot={{ r: 4 }} 
-                activeDot={{ r: 6 }} 
+                strokeWidth={3} 
+                dot={{ r: 5, strokeWidth: 1 }} 
+                activeDot={{ r: 7 }} 
               />
-              <Line type="monotone" dataKey="Talabat" stroke="#F97316" />
-              <Line type="monotone" dataKey="Noon" stroke="#FACC15" />
-              <Line type="monotone" dataKey="Careem" stroke="#84CC16" />
-              <Line type="monotone" dataKey="Google" stroke="#3B82F6" />
+              <Line type="monotone" dataKey="Talabat" stroke="#F97316" strokeWidth={2} />
+              <Line type="monotone" dataKey="Noon" stroke="#FACC15" strokeWidth={2} />
+              <Line type="monotone" dataKey="Careem" stroke="#84CC16" strokeWidth={2} />
+              <Line type="monotone" dataKey="Google" stroke="#3B82F6" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>

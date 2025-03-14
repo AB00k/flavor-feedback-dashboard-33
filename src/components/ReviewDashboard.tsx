@@ -81,19 +81,24 @@ export default function ReviewDashboard() {
         ))}
       </div>
 
+      {/* Sentiment Analysis and Rating Trends side by side */}
       <div className="grid gap-6 md:grid-cols-2 mb-6">
         <SentimentChart data={sentimentData} />
-        <TopReviews positiveReviews={positiveReviews} negativeReviews={negativeReviews} />
-      </div>
-
-      <div className="grid gap-6 mb-6">
         <ReviewTrendChart reviews={reviews} />
       </div>
 
+      {/* Top Positive and Negative Reviews side by side */}
+      <div className="grid gap-6 md:grid-cols-2 mb-6">
+        <TopReviews positiveReviews={positiveReviews} negativeReviews={[]} showPositiveOnly={true} />
+        <TopReviews positiveReviews={[]} negativeReviews={negativeReviews} showNegativeOnly={true} />
+      </div>
+
+      {/* Location Brand Analysis */}
       <div className="grid gap-6 mb-6">
         <LocationBrandAnalysis reviews={reviews} />
       </div>
       
+      {/* Reviews by Platform */}
       <div className="grid gap-4 mb-6">
         <h2 className="text-xl font-semibold">Reviews by Platform</h2>
         <div className="space-y-2">

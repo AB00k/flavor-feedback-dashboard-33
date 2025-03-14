@@ -6,44 +6,55 @@ import { ThumbsUp, ThumbsDown, Star } from "lucide-react";
 interface TopReviewsProps {
   positiveReviews: Review[];
   negativeReviews: Review[];
+  showPositiveOnly?: boolean;
+  showNegativeOnly?: boolean;
 }
 
-export function TopReviews({ positiveReviews, negativeReviews }: TopReviewsProps) {
+export function TopReviews({ 
+  positiveReviews, 
+  negativeReviews, 
+  showPositiveOnly = false,
+  showNegativeOnly = false
+}: TopReviewsProps) {
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <ThumbsUp className="h-5 w-5 text-green-500" />
-            <CardTitle>Top Positive Reviews</CardTitle>
-          </div>
-          <CardDescription>Highest rated customer feedback</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {positiveReviews.map((review) => (
-              <ReviewItem key={review.id} review={review} />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {(!showNegativeOnly) && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <ThumbsUp className="h-5 w-5 text-green-500" />
+              <CardTitle>Top Positive Reviews</CardTitle>
+            </div>
+            <CardDescription>Highest rated customer feedback</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {positiveReviews.map((review) => (
+                <ReviewItem key={review.id} review={review} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center gap-2">
-            <ThumbsDown className="h-5 w-5 text-orange-500" />
-            <CardTitle>Top Negative Reviews</CardTitle>
-          </div>
-          <CardDescription>Areas that may need improvement</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {negativeReviews.map((review) => (
-              <ReviewItem key={review.id} review={review} />
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      {(!showPositiveOnly) && (
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <ThumbsDown className="h-5 w-5 text-orange-500" />
+              <CardTitle>Top Negative Reviews</CardTitle>
+            </div>
+            <CardDescription>Areas that may need improvement</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {negativeReviews.map((review) => (
+                <ReviewItem key={review.id} review={review} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
