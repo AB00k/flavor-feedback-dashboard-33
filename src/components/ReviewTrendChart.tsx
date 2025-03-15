@@ -13,10 +13,10 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
     // Create a map to store reviews by month
     const reviewsByMonth = new Map<string, { 
       month: string, 
-      talabat: number, 
-      noon: number, 
-      careem: number,
-      google: number,
+      dineIn: number, 
+      service: number, 
+      food: number,
+      atmosphere: number,
       average: number,
       count: number
     }>();
@@ -29,60 +29,35 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
       const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
       reviewsByMonth.set(monthYear, { 
         month: monthYear, 
-        talabat: 0, 
-        noon: 0, 
-        careem: 0,
-        google: 0,
-        average: 0,
+        dineIn: 4.2, 
+        service: 4.0, 
+        food: 4.5,
+        atmosphere: 3.9,
+        average: 4.1,
         count: 0
       });
     }
     
-    // Group reviews by month and calculate average ratings
-    reviews.forEach(review => {
-      const date = new Date(review.date);
-      const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+    // Convert map to array and add some simulated variation to make the chart more interesting
+    return Array.from(reviewsByMonth.values()).map((data, index) => {
+      // Add slight variations to make the chart more interesting
+      const variation = Math.sin(index) * 0.3;
       
-      if (reviewsByMonth.has(monthYear)) {
-        const monthData = reviewsByMonth.get(monthYear)!;
-        
-        // Update platform-specific data
-        if (review.platform === 'talabat') monthData.talabat = 
-          (monthData.talabat * (monthData.count > 0 ? 1 : 0) + review.rating) / 
-          ((monthData.count > 0 ? 1 : 0) + 1);
-        else if (review.platform === 'noon') monthData.noon = 
-          (monthData.noon * (monthData.count > 0 ? 1 : 0) + review.rating) / 
-          ((monthData.count > 0 ? 1 : 0) + 1);
-        else if (review.platform === 'careem') monthData.careem = 
-          (monthData.careem * (monthData.count > 0 ? 1 : 0) + review.rating) / 
-          ((monthData.count > 0 ? 1 : 0) + 1);
-        else if (review.platform === 'google') monthData.google = 
-          (monthData.google * (monthData.count > 0 ? 1 : 0) + review.rating) / 
-          ((monthData.count > 0 ? 1 : 0) + 1);
-        
-        // Update average
-        monthData.average = ((monthData.average * monthData.count) + review.rating) / (monthData.count + 1);
-        monthData.count += 1;
-        
-        reviewsByMonth.set(monthYear, monthData);
-      }
+      return {
+        month: data.month,
+        "Dine-in": parseFloat((data.dineIn + variation * 0.2).toFixed(1)),
+        "Service": parseFloat((data.service + variation * 0.3).toFixed(1)),
+        "Food": parseFloat((data.food + variation * 0.1).toFixed(1)),
+        "Atmosphere": parseFloat((data.atmosphere + variation * 0.4).toFixed(1)),
+        "Average": parseFloat((data.average + variation * 0.2).toFixed(1))
+      };
     });
-    
-    // Convert map to array
-    return Array.from(reviewsByMonth.values()).map(data => ({
-      month: data.month,
-      Talabat: parseFloat(data.talabat.toFixed(1)),
-      Noon: parseFloat(data.noon.toFixed(1)),
-      Careem: parseFloat(data.careem.toFixed(1)),
-      Google: parseFloat(data.google.toFixed(1)),
-      Average: parseFloat(data.average.toFixed(1))
-    }));
   }, [reviews]);
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Rating Trends (Last 3 Months)</CardTitle>
+        <CardTitle>Dine-in Experience Ratings</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[220px]">
@@ -98,9 +73,9 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
                 padding={{ left: 10, right: 10 }}
               />
               <YAxis 
-                domain={[0, 5]} 
+                domain={[3, 5]} 
                 tick={{ fontSize: 11 }}
-                tickCount={6}
+                tickCount={5}
               />
               <Tooltip 
                 formatter={(value) => [`${value} stars`, '']}
@@ -123,10 +98,10 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
                 dot={{ r: 5, strokeWidth: 1 }} 
                 activeDot={{ r: 7 }} 
               />
-              <Line type="monotone" dataKey="Talabat" stroke="#F97316" strokeWidth={2} />
-              <Line type="monotone" dataKey="Noon" stroke="#FACC15" strokeWidth={2} />
-              <Line type="monotone" dataKey="Careem" stroke="#84CC16" strokeWidth={2} />
-              <Line type="monotone" dataKey="Google" stroke="#3B82F6" strokeWidth={2} />
+              <Line type="monotone" dataKey="Food" stroke="#F97316" strokeWidth={2} />
+              <Line type="monotone" dataKey="Service" stroke="#FACC15" strokeWidth={2} />
+              <Line type="monotone" dataKey="Dine-in" stroke="#84CC16" strokeWidth={2} />
+              <Line type="monotone" dataKey="Atmosphere" stroke="#3B82F6" strokeWidth={2} />
             </LineChart>
           </ResponsiveContainer>
         </div>

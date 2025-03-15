@@ -11,7 +11,7 @@ interface RatingSummaryCardProps {
 
 export function RatingSummaryCard({ platform, rating, reviewCount, color }: RatingSummaryCardProps) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden shadow-sm border border-gray-100">
       <div className="h-2" style={{ backgroundColor: color }} />
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium">{platform}</CardTitle>
