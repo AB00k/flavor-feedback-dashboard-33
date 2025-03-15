@@ -1,6 +1,6 @@
 
 import { useMemo } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Review } from "@/services/mockData";
 
@@ -43,64 +43,58 @@ export function ReviewTrendChart({ reviews }: ReviewTrendChartProps) {
   return (
     <Card className="h-full">
       <CardHeader className="pb-1">
-        <CardTitle className="text-lg font-medium">Dine-in Experience</CardTitle>
+        <CardTitle className="text-lg font-medium">Dining Experience Ratings</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[220px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={chartData}
-              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-              barSize={32}
+              margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+              barSize={40}
             >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.4} />
+              <CartesianGrid strokeDasharray="3 3" opacity={0.2} horizontal={true} vertical={false} />
               <XAxis 
                 dataKey="name" 
-                tick={{ fontSize: 11 }}
+                tick={{ fontSize: 12, fill: '#666' }}
                 axisLine={false}
                 tickLine={false}
-                padding={{ left: 10, right: 10 }}
-                height={45}
-                angle={-5}
               />
               <YAxis 
                 domain={[0, 5]} 
-                tick={{ fontSize: 11 }}
                 tickCount={6}
+                tick={{ fontSize: 12, fill: '#666' }}
                 axisLine={false}
                 tickLine={false}
                 width={30}
               />
               <Tooltip 
-                formatter={(value) => [`${value} stars`, '']}
+                formatter={(value) => [`${value} out of 5 stars`, '']}
+                labelStyle={{ fontWeight: 'bold', color: '#333' }}
                 contentStyle={{ 
                   borderRadius: '8px',
-                  padding: '8px 12px',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                  padding: '10px 14px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                   border: 'none',
-                  backgroundColor: 'rgba(255, 255, 255, 0.95)'
+                  backgroundColor: 'rgba(255, 255, 255, 0.98)'
                 }}
                 cursor={{ fill: 'rgba(0, 0, 0, 0.05)' }}
               />
-              <Legend 
-                verticalAlign="top"
-                height={0}
-                wrapperStyle={{ visibility: 'hidden' }}
-              />
-              {chartData.map((entry, index) => (
+              {chartData.map((entry) => (
                 <Bar 
-                  key={`bar-${index}`}
+                  key={entry.name}
                   dataKey="rating" 
                   name={entry.name}
                   fill={entry.color}
                   radius={[4, 4, 0, 0]}
-                  stackId="stack"
                   background={{ fill: '#f5f5f5', radius: [4, 4, 0, 0] }}
+                  maxBarSize={60}
                   label={{
                     position: 'top',
                     formatter: (value: number) => `${value}`,
-                    fontSize: 11,
-                    fill: '#666'
+                    fontSize: 13,
+                    fontWeight: 'bold',
+                    fill: '#555'
                   }}
                 />
               ))}
